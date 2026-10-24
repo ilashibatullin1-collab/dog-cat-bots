@@ -1,12 +1,12 @@
-name: Run Telegram Bot
+name: Запустить бот Telegram
 
 on:
   schedule:
-  - cron: '*/5 * * * *'  # Каждые 5 минут Запуск каждую минуту
-  workflow_dispatch:      # Возможность ручного запуска
+    - cron: '*/5 * * * *'  # Запуск каждые 5 минут
+  workflow_dispatch:     # Возможность ручного запуска
 
 jobs:
-  run-bot:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -20,10 +20,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Run bot
+        run: python main.py
         env:
           BOT_TOKEN: \${{ secrets.BOT_TOKEN }}
-        run: python main.py
-
