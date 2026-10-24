@@ -14,7 +14,6 @@ if not TOKEN:
 # Фикс сети: чтобы не было зависаний (таймаутов)
 import asyncio
 from aiohttp import ClientSession
-
 async def main():
     async with ClientSession() as session:
         # используй session для запросов
