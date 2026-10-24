@@ -1,9 +1,14 @@
 import asyncio
 import os
-import requests
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+import telebot
+bot = telebot.TeleBot(BOT_TOKEN)
 
-# 1. Получаем токен
-token = os.getenv("BOT_TOKEN")
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    bot.reply_to(message, "Привет! Я бот для собак и кошек!")
+
+bot.polling(none_stop=True)
 
 # 2. КРИТИЧЕСКИ ВАЖНО: Проверяем, что токен вообще есть
 if not token:
