@@ -12,8 +12,17 @@ if not TOKEN:
     raise ValueError("Не найден BOT_TOKEN! Проверь настройки в GitHub Secrets.")
 
 # Фикс сети: чтобы не было зависаний (таймаутов)
-connector = TCPConnector()
-session = AiohttpSession(connector=connector)
+import asyncio
+from aiohttp import ClientSession
+
+async def main():
+    async with ClientSession() as session:
+        # используй session для запросов
+        ...
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
 bot = Bot(token=TOKEN, session=session)
 dp = Dispatcher()
 
