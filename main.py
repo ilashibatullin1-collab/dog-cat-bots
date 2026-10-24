@@ -1,29 +1,25 @@
 import asyncio
 import os
-from aiohttp import ClientSession
+import requests
 
-async def main():
-    token = os.getenv("BOT_TOKEN")
-    if not token:
-        raise ValueError("BOT_TOKEN не найден! Проверь секреты в GitHub Actions.")
+# 1. Получаем токен
+token = os.getenv("BOT_TOKEN")
 
-    async with ClientSession() as session:
-        # Получаем обновления (getUpdates)
-        # offset=0 означает, что мы хотим получить все старые сообщения, 
-        # чтобы не застрять в цикле, если бот уже получал сообщения ранее.
-        async with session.get(f"https://api.telegram.org/bot{token}/getUpdates?offset=0") as resp:
-            data = await resp.json()
-            print("Получены обновления:", data)
+# 2. КРИТИЧЕСКИ ВАЖНО: Проверяем, что токен вообще есть
+if not token:
+    print("❌ ОШИБКА: Переменная окружения BOT_TOKEN не найдена!")
+    print("👉 Проверь Settings -> Secrets and variables -> Actions в репозитории.")
+    exit(1) # Останавливаем скрипт, чтобы не слать мусор в Telegram
 
-        # Пример отправки сообщения (замените CHAT_ID на свой ID или оставьте логику получения ID из getUpdates)
-        # Для теста можно отправить сообщение самому себе, если знаешь свой chat_id
-        # chat_id = "ТВОЙ_ID" 
-        # async with session.post(f"https://api.telegram.org/bot{token}/sendMessage", 
-        #                         json={"chat_id": chat_id, "text": "Бот на aiohttp работает!"}) as resp:
-        #     print(await resp.json())
+# 3. Формируем URL
+url = f"https://api.telegram.org/bot{token}/getUpdates"
 
-        print("Бот успешно выполнил запрос и завершил работу.")
+# 4. Делаем запрос
+response = requests.get(url)
+data = response.json()
 
-if __name__ == "__main__":
-    asyncio.run(main())
+# 5. Выводим ответ в лог, чтобы видеть, что пришло
+print(f"📡 Ответ от Telegram: {data}")
 
+if not data.get("ok"):
+    print(f"⚠️ Telegram вернул ошибку: {data}")
