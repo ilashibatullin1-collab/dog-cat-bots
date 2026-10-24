@@ -1,27 +1,16 @@
 import asyncio
 import os
-from aiogram import Bot, Dispatcher, types, F
-from aiogram.filters import Command
-from aiogram.utils.keyboard import ReplyKeyboardBuilder
-from aiohttp import TCPConnector
-from aiogram.client.session.aiohttp import AiohttpSession
-
-# Получаем токен из переменной окружения (НЕ из кода!)
-TOKEN = os.getenv("BOT_TOKEN")
-if not TOKEN:
-    raise ValueError("Не найден BOT_TOKEN! Проверь настройки в GitHub Secrets.")
-
-# Фикс сети: чтобы не было зависаний (таймаутов)
-import asyncio
 from aiohttp import ClientSession
+import asyncio
+
 async def main():
-    async with ClientSession() as session:
-        # используй session для запросов
-        ...
+    token = os.getenv("BOT_TOKEN")
+    if not token:
+        raise ValueError("BOT_TOKEN не найден!")
+    # остальной код
 
 if __name__ == "__main__":
     asyncio.run(main())
-
 bot = Bot(token=TOKEN, session=session)
 dp = Dispatcher()
 
