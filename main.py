@@ -1,43 +1,29 @@
 import asyncio
 import os
 from aiohttp import ClientSession
-import asyncio
 
 async def main():
     token = os.getenv("BOT_TOKEN")
     if not token:
-        raise ValueError("BOT_TOKEN не найден!")
-    # остальной код
+        raise ValueError("BOT_TOKEN не найден! Проверь секреты в GitHub Actions.")
+
+    async with ClientSession() as session:
+        # Получаем обновления (getUpdates)
+        # offset=0 означает, что мы хотим получить все старые сообщения, 
+        # чтобы не застрять в цикле, если бот уже получал сообщения ранее.
+        async with session.get(f"https://api.telegram.org/bot{token}/getUpdates?offset=0") as resp:
+            data = await resp.json()
+            print("Получены обновления:", data)
+
+        # Пример отправки сообщения (замените CHAT_ID на свой ID или оставьте логику получения ID из getUpdates)
+        # Для теста можно отправить сообщение самому себе, если знаешь свой chat_id
+        # chat_id = "ТВОЙ_ID" 
+        # async with session.post(f"https://api.telegram.org/bot{token}/sendMessage", 
+        #                         json={"chat_id": chat_id, "text": "Бот на aiohttp работает!"}) as resp:
+        #     print(await resp.json())
+
+        print("Бот успешно выполнил запрос и завершил работу.")
 
 if __name__ == "__main__":
     asyncio.run(main())
-bot = Bot(token=TOKEN, session=session)
-dp = Dispatcher()
 
-@dp.message(Command("start"))
-async def cmd_start(message: types.Message):
-    builder = ReplyKeyboardBuilder()
-    builder.add(types.KeyboardButton(text="🧥 Гардероб"))
-    builder.add(types.KeyboardButton(text="🛍 Магазин"))
-    builder.add(types.KeyboardButton(text="👤 Профиль"))
-
-    await message.answer(
-        "Привет! Выбирай, что хочешь:",
-        reply_markup=builder.as_markup(resize_keyboard=True)
-    )
-
-@dp.message(F.text.in_(["🧥 Гардероб", "🛍 Магазин", "👤 Профиль"]))
-async def handle_buttons(message: types.Message):
-    if message.text == "🧥 Гардероб":
-        await message.answer("🎒 Тут будет твой гардероб: одежда для собаки и кошки!")
-    elif message.text == "🛍 Магазин":
-        await message.answer("💰 Магазин: покупай одежду за звёзды!")
-    elif message.text == "👤 Профиль":
-        await message.answer("👤 Твой профиль и баланс звёзд.")
-
-async def main():
-    await dp.start_polling(bot)
-
-if __name__ == "__main__":
-    asyncio.run(main())
-    
