@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pet Clothes Game</title>
+
+    <!-- Подключаем скрипт Telegram -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 16px;
+        background-color: #121212;
+        color: white;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      }
+      .grid-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .menu-btn {
+        padding: 14px;
+        border-radius: 16px;
+        border: none;
+        background: white;
+        color: #333;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+      }
+      .menu-btn:active {
+        background: #f0f0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>Игра: Одежда для питомцев</h3>
+    <div class="grid-container">
+      <button class="menu-btn" onclick="sendAction('profile')">👤 Профиль</button>
+      <button class="menu-btn" onclick="sendAction('wardrobe')">🧥 Гардероб</button>
+      <button class="menu-btn" onclick="sendAction('shop')">🛍 Магазин</button>
+    </div>
+
+    <script>
+      // Сначала проверяем, загрузился ли объект Telegram
+      if (window.Telegram) {
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+
+        function sendAction(action) {
+          console.log('✅ Отправляем в бота:', action);
+          tg.sendData(action);
+        }
+      } else {
+        // Если открыли просто в браузере — покажем понятное сообщение
+        document.body.innerHTML = `
+          <h2>⚠️ Открой это в Telegram!</h2>
+          <p>Этот интерфейс работает только внутри Telegram Web App.</p>
+          <p>Проверяй через кнопку <b>Open Web App</b> в BotFather.</p>
+        `;
+        console.warn('Telegram WebApp not found — opened outside Telegram');
+      }
+    </script>
+  </body>
+</html>

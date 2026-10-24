@@ -1,0 +1,25 @@
+petshop-bot/
+├── .gitignore
+├── requirements.txt
+├── main.py
+├── config.py
+├── keyboards/
+│   ├── __init__.py
+│   └── main_menu.py
+├── handlers/
+│   ├── __init__.py
+│   ├── start.py
+│   ├── cat.py
+│   ├── inventory.py
+│   └── rating.py
+└── services/
+    ├── __init__.py
+    └── user_data.py
+
+__pycache__/
+*.pyc
+.env
+.DS_Store
+venv/
+.idea/
+*.log

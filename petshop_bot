@@ -1,0 +1,12 @@
+petshop_bot/
+├── main.py
+├── database.py
+├── shop.db                  <-- создастся сам при первом запуске
+├── requirements.txt
+├── .gitignore
+└── assets/
+    ├── cat_base.png        <-- кошка на прозрачном фоне
+    ├── scarf.png           <-- шарфик на прозрачном фоне
+    └── hat.png             <-- шляпка на прозрачном фоне
+
+
