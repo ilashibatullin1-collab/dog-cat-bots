@@ -1,6 +1,6 @@
 import asyncio
 import os
-import requests
+import requests  # ✅ Правильно
 
 # 1. Получаем токен
 token = os.getenv("BOT_TOKEN")
