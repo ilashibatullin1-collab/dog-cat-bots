@@ -12,7 +12,9 @@ if not TOKEN:
     raise ValueError("Не найден BOT_TOKEN! Проверь настройки в GitHub Secrets.")
 
 # Фикс сети: чтобы не было зависаний (таймаутов)
-connector = TCPConnector(force_ipv4=True)
+import socket
+
+connector = TCPConnector(family=socket.AF_INET)
 session = AiohttpSession(connector=connector)
 bot = Bot(token=TOKEN, session=session)
 dp = Dispatcher()
